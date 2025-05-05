@@ -17,14 +17,14 @@ const mockConta = {
 };
 
 const ContaDetalhes = () => {
-  const  {nome, cpf, dataNascimento, email} = useUserStore();
+  const  {idPessoa,nome, cpf, dataNascimento, email} = useUserStore();
   console.log("Usuário logado:", nome, cpf, dataNascimento, email);
   return (
     <Container>
       <CardExtrato>
         <ContainerExtrato type="conta">
           <TitleSection>Detalhes da Conta</TitleSection>
-          <InfoItem><strong>Nome do titular:</strong> {nome}</InfoItem>
+          <InfoItem><strong>Nome do titular:</strong> {idPessoa}</InfoItem>
           <InfoItem><strong>Número da conta:</strong> {cpf}</InfoItem>
           <InfoItem><strong>Agência:</strong> {dataNascimento}</InfoItem>
           <InfoItem><strong>Banco:</strong> {email}</InfoItem>
