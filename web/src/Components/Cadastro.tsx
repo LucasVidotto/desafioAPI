@@ -65,6 +65,9 @@ const Cadastro= ({onClick}:AuthScreenProps) => {
     if (!nome || !cpf || !email || !tipoConta || !password || !dataNascimento) {
       setErrors('Preencha todos os campos!');
       return;
+    }else if(cpf.length != 11){
+      setErrors('CPF Inválido');
+      return;
     }
 
     setErrors(null);

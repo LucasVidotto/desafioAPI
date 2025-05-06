@@ -1,12 +1,15 @@
 import { CardBlock } from "../../Style/BloqueioStyled";
 
-const Bloqueio = () =>{
+interface Props{
+    onClick : () => void;
+}
+const Bloqueio = ({onClick}: Props) =>{
     return(
         <>
             <CardBlock>
-               <div> Deseja mesmo bloquear a sua conta?</div>
+               <div> Deseja bloquear a conta?</div>
                <div>
-                <button>Sim</button>
+                <button onClick={onClick}>Sim</button>
                 <button>Não</button>
                </div>
             </CardBlock>

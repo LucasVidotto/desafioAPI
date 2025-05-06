@@ -14,7 +14,7 @@ const Extrato = () =>{
         }
     }, [navigate, data]);
 
-    if(!data) return null;//n rederizar
+    if(!data) return null;//não rederizar
     const { type, description, date, amount } = location.state;
     return(
         <>

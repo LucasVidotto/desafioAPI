@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useContaStore } from '../Store/contaStore';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   BalanceSection,
@@ -10,6 +11,7 @@ import {
   TransactionItem,
   CloseUP,
 } from '../Style/MenuStyled';
+import axios from 'axios';
 
 import { FaRegEye,FaRegEyeSlash } from "react-icons/fa6";
 import HeaderMenu from '../Components/Menu/HeaderMenu';
@@ -20,6 +22,7 @@ const Menu = () => {
   const {saldo, tipoConta, idConta} = useContaStore();
   const [statusBlock, setStatusBlock] = useState(false);
   const [conta,setConta] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() =>{//verificação do tipo de conta
     if( tipoConta === 1){
@@ -35,18 +38,23 @@ const Menu = () => {
     setCloseUp(!closeUp); // Alterna a visibilidade do saldo
   }
 
-  const handlerBloqueio = () =>{//bloqueia a conta
-      
+  const handlerBloqueio = async () =>{//bloqueia a conta
+    const response = await axios.post('http://localhost:3000/bloqueio',{idConta});
+    if (response.data){
+      console.log(response.data);
+    }
   }
 
   const handleropenBloqueio = () =>{//chama o bloqueio
     setStatusBlock(!statusBlock)
+    alert('Conta Bloqueada');
+    navigate('/auth');
   }
 
   return (
     <Container>
      <HeaderMenu conta={conta}/>
-     {statusBlock ? <Bloqueio /> : <></>}
+     {statusBlock ? <Bloqueio onClick={handlerBloqueio}/> : <></>}
       <BalanceSection> {/* Saldo */}
         <div>
           <BalanceTitle>Saldo disponível</BalanceTitle>

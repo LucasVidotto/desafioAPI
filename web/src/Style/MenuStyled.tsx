@@ -107,7 +107,7 @@ export const CloseUP = styled.div	`
 `
 
 export const SectionTitle = styled.h3`
-  margin: 2rem 7rem 1rem;
+  margin: 2rem 11rem 1rem;
   align-self: flex-start;
   max-width: 1200px;
   width: 100%;
@@ -123,7 +123,7 @@ export const CardsContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1.5rem;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1260px;
 `;
 
 export const ActionCard = styled.div`
