@@ -19,7 +19,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-y:auto;
 `;
 
 export const FormCard = styled.form`
@@ -27,12 +27,20 @@ export const FormCard = styled.form`
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
-  padding: 1rem 2.5rem;
+  padding: 2rem 2.5rem;
   width: 100%;
   max-width: 450px;
+  max-height:810px;
   animation: ${fadeIn} 0.8s ease forwards;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  overflow-y:auto;
   color: #fff;
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    max-width: 80%;
+    max-height: 80%;
+  }
 `;
 
 export const Title = styled.h2`

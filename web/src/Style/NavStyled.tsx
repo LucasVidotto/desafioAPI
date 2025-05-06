@@ -6,8 +6,12 @@ export const BoxNav = styled.div`
     height: 70px;
     position: absolute;
     top: 4%;
-    left: 30%;
+    /* left: 30%; */
     gap: 20px;
+
+    @media(max-width:480px){
+      left:8%;
+    }
 
 `
 

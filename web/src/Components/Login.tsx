@@ -19,7 +19,7 @@ import {
 const baseURlPost = 'http://localhost:3000/login';
 const AuthScreen = ({onClick}: AuthScreenProps) => {
 
-  const [user, setUser] = useState<{
+  const [user, setUser] = useState<{//dados para api
     idPessoa: number,
     idConta: number,
     nome :string,
@@ -62,20 +62,23 @@ const AuthScreen = ({onClick}: AuthScreenProps) => {
         console.log('dados:', response.data);
         const {pessoa, conta} = response.data; // recebe dados do banco
         const { idPessoa, nome, cpf, dataNascimento, email  } = pessoa;//separa para pessoa
-        const {idConta,saldo ,limiteSaqueDiario,tipoConta} = conta; //separa para conta
-        setUser({ idPessoa,idConta, nome, cpf, dataNascimento, email , limiteSaqueDiario, tipoConta,saldo });
-        takeData(idPessoa,nome, cpf, dataNascimento, email);
-        takeConta(idConta, saldo, limiteSaqueDiario,tipoConta);
-        setTimeout(() => {
-          navigate('/conta');
-        }, 500); 
+        const {idConta,saldo ,limiteSaqueDiario,tipoConta, flagAtivo} = conta; //separa para conta
+        if(flagAtivo === true){
+          setUser({ idPessoa,idConta, nome, cpf, dataNascimento, email , limiteSaqueDiario, tipoConta,saldo });
+          takeData(idPessoa,nome, cpf, dataNascimento, email);
+          takeConta(idConta, saldo, limiteSaqueDiario,tipoConta);
+          setTimeout(() => {
+            navigate('/dashboard');
+          }, 500); 
+        }else{
+        alert('Sua conta está Desativada')
+        }
+        /*  */
       }
     } catch (error) {
       console.error('Erro ao buscar usuários:', error);
     }
-    /* console.log('Dados enviados:', formData); */
     console.log(user)
-    //navigate('/conta');
   };
   return (
     <>

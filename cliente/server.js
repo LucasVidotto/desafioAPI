@@ -88,7 +88,6 @@ app.post('/login', async (req, res) => {
     
     if (pessoa) {
       const conta = await Conta.findOne({where: {idPessoa: pessoa.idPessoa}})
-      console.log('pessoa : ',pessoa.idPessoa)
       res.status(200).json({ message: 'Login bem-sucedido', pessoa, conta });
     } else {
       res.status(401).json({ message: 'cpf ou senha incorretos' });
@@ -98,6 +97,20 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Erro no servidor' });
   }
 });
+
+app.post('/bloqueio', async(req, res) =>{
+  const {idConta}= req.body;
+
+  try{
+    const conta = await Conta.findOne({where : {idConta}})
+
+    if(conta){
+      res.status(200).json({ message: 'Login bem-sucedido', conta });
+    }
+  }catch(error){
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
+})
 
 app.post('/extrato', async (req, res) => {
   const { idConta } = req.query;

@@ -23,7 +23,7 @@ interface AuthScreenProps {
 const Cadastro= ({onClick}:AuthScreenProps) => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ //dados cadastrais da página
     nome: '',
     cpf: '',
     email: '',
@@ -34,7 +34,7 @@ const Cadastro= ({onClick}:AuthScreenProps) => {
   });
   const [errors, setErrors] = useState<string | null>(null);
 
-  const handlerCadastro = async () => {
+  const handlerCadastro = async () => {//conexão api
     if (formData.tipoConta === 'corrente'){
       setFormData(prev => ({ ...prev, numConta: 1 }));
     }else{

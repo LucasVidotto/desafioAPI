@@ -1,81 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { useContaStore } from '../Store/contaStore';
-import { useUserStore } from '../Store/userStore';
 import {
   Container,
-  Header,
-  UserSection,
-  ProfilePic,
-  UserInfo,
-  UserName,
-  AccountInfo,
   BalanceSection,
   BalanceTitle,
   BalanceAmount,
-  CardsContainer,
-  ActionCard,
-  CardIcon,
-  CardLabel,
   SectionTitle,
   TransactionsSection,
   TransactionItem,
-  CloseUP
+  CloseUP,
 } from '../Style/MenuStyled';
 
-import {
-  FiSend,
-  FiDollarSign,
-  FiFileText,
-  FiTrendingUp,
-  FiCreditCard,
-  FiSettings,
-  FiLogOut
-} from 'react-icons/fi';
-
 import { FaRegEye,FaRegEyeSlash } from "react-icons/fa6";
+import HeaderMenu from '../Components/Menu/HeaderMenu';
+import ContainerCard from '../Components/Menu/ContainerCard';
+import Bloqueio from '../Components/Menu/Bloqueio';
 
 const Menu = () => {
-  const {saldo, tipoConta, resetConta} = useContaStore();
-  const {nome,resetData} = useUserStore();
+  const {saldo, tipoConta, idConta} = useContaStore();
+  const [statusBlock, setStatusBlock] = useState(false);
   const [conta,setConta] = useState('');
 
-  useEffect(() =>{
+  useEffect(() =>{//verificação do tipo de conta
     if( tipoConta === 1){
       setConta('Conta Corrente');
     }else{
       setConta('Conta Poupança');
     }
   },[tipoConta])
-  const navigate = useNavigate();
-  const [closeUp, setCloseUp] = useState(false); // Estado para controlar a visibilidade do saldo
 
-  const handlerOut =() =>{
-    alert('Você saiu da conta!');
-    resetData();
-    resetConta();
-    navigate('/auth'); // Redireciona para a página de autenticação
-  }
+  const [closeUp, setCloseUp] = useState(false); // Estado para controlar a visibilidade do saldo
 
   const handlerCloseUP = () => {
     setCloseUp(!closeUp); // Alterna a visibilidade do saldo
   }
 
+  const handlerBloqueio = () =>{//bloqueia a conta
+      
+  }
+
+  const handleropenBloqueio = () =>{//chama o bloqueio
+    setStatusBlock(!statusBlock)
+  }
+
   return (
     <Container>
-      <Header>
-        <UserSection>
-          <ProfilePic src="https://i.pravatar.cc/150?img=4" />
-          <UserInfo>
-            <UserName>{nome}</UserName>
-            <AccountInfo>Tipo Conta : {conta}</AccountInfo>
-          </UserInfo>
-        </UserSection>
-
-        <button onClick={handlerOut}><FiLogOut /> Sair</button>
-      </Header>
-
+     <HeaderMenu conta={conta}/>
+     {statusBlock ? <Bloqueio /> : <></>}
       <BalanceSection> {/* Saldo */}
         <div>
           <BalanceTitle>Saldo disponível</BalanceTitle>
@@ -87,34 +58,7 @@ const Menu = () => {
       </BalanceSection>
 
       <SectionTitle>Serviços</SectionTitle>
-      <CardsContainer>
-        <ActionCard>
-          <CardIcon><FiSend /></CardIcon>
-          <CardLabel>
-            <Link to={{pathname:"/deposito"}}>Transferência </Link></CardLabel>
-        </ActionCard>
-        <ActionCard>
-          <CardIcon><FiDollarSign /></CardIcon>
-          <CardLabel>
-            <Link to={{pathname:"/saque"}}>Saque</Link></CardLabel>
-        </ActionCard>
-        <ActionCard>
-          <CardIcon><FiFileText /></CardIcon>
-          <CardLabel> <Link to={{pathname:"/transacao"}}>Extrato</Link></CardLabel>
-        </ActionCard>
-        <ActionCard>
-          <CardIcon><FiTrendingUp /></CardIcon>
-          <CardLabel>Investimentos</CardLabel>
-        </ActionCard>
-        <ActionCard>
-          <CardIcon><FiCreditCard /></CardIcon>
-          <CardLabel>Cartões</CardLabel>
-        </ActionCard>
-        <ActionCard>
-          <CardIcon><FiSettings /></CardIcon>
-          <CardLabel> <Link to={{pathname:"/conta"}}>Detalhes da Conta</Link></CardLabel>
-        </ActionCard>
-      </CardsContainer>
+      <ContainerCard onClick={handleropenBloqueio} />
 
       <SectionTitle>Últimas movimentações</SectionTitle>
       <TransactionsSection>
@@ -134,5 +78,4 @@ const Menu = () => {
     </Container>
   );
 };
-
 export default Menu;

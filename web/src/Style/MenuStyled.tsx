@@ -10,6 +10,10 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: 'Segoe UI', sans-serif;
+
+  @media(max-width: 480px){
+    padding: 1rem 1rem;
+  }
 `;
 
 export const Header = styled.header`
@@ -36,6 +40,10 @@ export const Header = styled.header`
     &:hover {
       background: rgba(255, 255, 255, 0.1);
     }
+  }
+
+  @media (max-width: 480px){
+    width: 90%;
   }
 `;
 
@@ -72,6 +80,9 @@ export const BalanceSection = styled.div`
   max-width: 1200px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
   margin-bottom: 2rem;
+  @media(max-width:480px){
+    width: 90%;
+  }
 `;
 
 export const BalanceTitle = styled.p`
@@ -101,6 +112,10 @@ export const SectionTitle = styled.h3`
   max-width: 1200px;
   width: 100%;
   font-size: 1.5rem;
+
+  @media(max-width:480px){
+    width: 40%;
+  }
 `;
 
 export const CardsContainer = styled.div`

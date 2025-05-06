@@ -8,13 +8,13 @@ const Extrato = () =>{
     const navigate = useNavigate();
     const data = location.state;
 
-    useEffect(() => {
+    useEffect(() => {//verifica se não foi aberto com link
          if(!data){
             navigate('/transacao');
         }
     }, [navigate, data]);
 
-    if(!data) return null;
+    if(!data) return null;//n rederizar
     const { type, description, date, amount } = location.state;
     return(
         <>

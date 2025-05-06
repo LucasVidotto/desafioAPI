@@ -31,6 +31,10 @@ export const Card = styled.div`
   animation: ${fadeInUp} 0.6s ease;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   color: #fff;
+
+  @media(max-width:480px){
+        width: 70%;
+    }
 `;
 
 export const Title = styled.h2`

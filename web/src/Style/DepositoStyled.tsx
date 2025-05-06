@@ -8,6 +8,7 @@ export const Container = styled.div`
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    
 `
 
 export const Card = styled.div`
@@ -20,6 +21,10 @@ export const Card = styled.div`
     flex-direction: column;
     max-width: 450px;
     padding: 3rem 2.5rem;
+
+    @media(max-width:480px){
+        width: 70%;
+    }
 `
 export const Title = styled.h2`
     font-size: 2rem;
