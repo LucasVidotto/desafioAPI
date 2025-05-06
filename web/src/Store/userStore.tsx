@@ -8,6 +8,7 @@ type userState = {
   dataNascimento: string;
   email: string;
   takeData: (idPessoa: number,nome: string, cpf: string, dataNascimento: string, email: string) => void;
+  resetData: () => void;
 };
 
 export const useUserStore = create(

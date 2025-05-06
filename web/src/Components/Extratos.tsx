@@ -2,6 +2,7 @@ import { Container } from "../Style/ContaStyled";
 import {ContainerExtrato,TitleExtrato,BoxExtrato,CardExtrato,ValueHighlight,InfoItem} from "../Style/ExtratoStyled";
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
+import Nav from "./Nav";
 const Extrato = () =>{
     const location = useLocation();
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Extrato = () =>{
     const { type, description, date, amount } = location.state;
     return(
         <>
+        <Nav/>
         <Container>
             <CardExtrato>
                 <ContainerExtrato type={type}>

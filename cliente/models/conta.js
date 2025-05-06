@@ -56,4 +56,3 @@ Pessoa.hasMany(Conta, {
 });
 
 module.exports = Conta;
-

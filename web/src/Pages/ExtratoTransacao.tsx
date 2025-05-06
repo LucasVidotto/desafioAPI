@@ -12,66 +12,51 @@ import {
   } from '../Style/TransacaoStyled';
   import { useContaStore } from '../Store/contaStore';
 import { Link } from 'react-router-dom';
+import Nav from '../Components/Nav';
 const baseURlPost = 'http://localhost:3000/extrato';
 
-  const mockTransactions = [
-    {
-      id: 1,
-      type: 'deposit',
-      description: 'Depósito via TED',
-      date: '30/04/2025',
-      amount: 1200.00
-    },
-    {
-      id: 2,
-      type: 'withdraw',
-      description: 'Saque no caixa eletrônico',
-      date: '28/04/2025',
-      amount: -300.00
-    },
-    {
-      id: 3,
-      type: 'deposit',
-      description: 'Pagamento cliente',
-      date: '25/04/2025',
-      amount: 890.00
-    },
-    {
-      id: 4,
-      type: 'withdraw',
-      description: 'Transferência Pix',
-      date: '22/04/2025',
-      amount: -150.00
-    }
-  ];
 
   const ExtratoTransacao = () => {
-  const [extratos, setExtratos] = useState();
-  const {idConta,tipoConta } = useContaStore();
+  const [extratos, setExtratos] = useState<any>();
+  const {idConta } = useContaStore();
 
   useEffect(() =>{
-    Axios.get(`$baseURlPost?idConta=idConta`).then((response=>{
+    Axios.post(baseURlPost, {
+      idconta: idConta
+    }).then((response) =>{
       setExtratos(response.data);
-    }))
-  })
+      console.log('Extrato : ',response.data);
+    }).catch((error) =>{
+      console.error('Erro ao buscar dados do extrato', error);
+    })
+    
+  },[])
     return (
       <Container>
+        <Nav />
         <Card>
           <Title>Extrato de Transações</Title>
           <TransactionsList>
-            {mockTransactions.map(tx => (
+            {extratos && extratos.length > 0 ? 
+            (extratos.map((tx: any) => (
               <Link 
+              key={tx.idtransacao}
               to={`/extrato`} 
-                state={{type:tx.type, description:tx.description, date:tx.date, amount:tx.amount}}>
-                <TransactionItem key={tx.id} type={tx.type}>
-                  <Description>{tx.description}</Description>
-                  <DateText>{tx.date}</DateText>
-                  <Amount type={tx.type}>
-                    {tx.amount < 0 ? '-' : '+'} R$ {Math.abs(tx.amount).toFixed(2)}
+                state={{type:tx.tipoDeposito, 
+                description:`Transação ${tx.tipoDeposito}`, 
+                date:tx.dataTransacao, 
+                amount:parseFloat(tx.valor)}}>
+                <TransactionItem key={tx.idTransacao} type={tx.tipoDeposito}>
+                  <Description>Transação {tx.tipoDeposito}</Description>
+                  <DateText>{tx.dataTransacao}</DateText>
+                  <Amount type={tx.tipoDeposito}>
+                    {tx.amount < 0 ? '-' : '+'} R$ {Math.abs(parseFloat(tx.valor)).toFixed(2)}
                   </Amount>
                 </TransactionItem>
               </Link>
-            ))}
+            ))
+          ) :
+          ( <p>Não há transações para exibir.</p> )}
           </TransactionsList>
         </Card>
       </Container>

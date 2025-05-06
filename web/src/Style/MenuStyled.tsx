@@ -136,6 +136,10 @@ export const CardIcon = styled.div`
 
 export const CardLabel = styled.p`
   font-size: 1rem;
+  & > a{
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 export const TransactionsSection = styled.div`

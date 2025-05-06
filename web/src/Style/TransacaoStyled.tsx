@@ -13,7 +13,7 @@ const fadeIn = keyframes`
 
 export const Container = styled.div`
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   display: flex;
   justify-content: center;
@@ -41,6 +41,9 @@ export const Title = styled.h2`
 export const TransactionsList = styled.div`
   display: flex;
   flex-direction: column;
+  max-height:400px;
+  overflow-y: auto;
+  padding-right: 10px;
   gap: 1.2rem;
   & > a{
     text-decoration: none;
@@ -57,7 +60,7 @@ export const TransactionItem = styled.div<{ type: string }>`
   align-items: center;
   animation: ${fadeIn} 0.4s ease;
   border-left: 5px solid ${props =>
-    props.type === 'deposit' ? '#00e676' : '#ff5252'};
+    props.type === 'deposito' ? '#00e676' : '#ff5252'};
 `;
 
 export const Description = styled.span`
@@ -74,5 +77,5 @@ export const DateText = styled.span`
 export const Amount = styled.span<{ type: string }>`
   font-size: 1.1rem;
   font-weight: bold;
-  color: ${props => (props.type === 'deposit' ? '#00e676' : '#ff5252')};
+  color: ${props => (props.type === 'deposito' ? '#00e676' : '#ff5252')};
 `;

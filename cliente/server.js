@@ -49,15 +49,26 @@ app.post('/transacoes', async(req,res) =>{
       dataTransacao,
       tipoDeposito
     });
+    console.log(tipoDeposito,valor)
     if(novaTransacao){
       const conta = await Conta.findOne({where: {idConta}});
       if(!conta){
         return res.status(404).json({error: 'Conta nao encontrada'});
       }
       if(tipoDeposito === 'deposito'){
-        conta.saldo += parseFloat(valor);
+        saldo_conta = conta.saldo
+        total = parseFloat(saldo_conta) + parseFloat(valor)
+        console.log(total)
+        conta.saldo = total;
+        await conta.save();
+      }else{
+        saldo_conta = conta.saldo
+        total = parseFloat(saldo_conta) - parseFloat(valor)
+        console.log(total)
+        conta.saldo = total;
         await conta.save();
       }
+
     }
 
     res.status(201).json(novaTransacao);
@@ -66,7 +77,6 @@ app.post('/transacoes', async(req,res) =>{
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
-
 
 //buscando do banco de dados
 app.post('/login', async (req, res) => {
@@ -109,30 +119,6 @@ app.post('/extrato', async (req, res) => {
     res.status(500).json({ error: "Erro interno do servidor." });
   }
 });
-
-app.post('/contas', async (req, res) => {
-    try {
-      const { cpf, saldo, limiteSaqueDiario, flagAtivo, tipoConta, dataCriacao } = req.body;
-  
-      // Verifica se a pessoa existe
-      const pessoa = await Pessoa.findByPk(idPessoa);
-      if (!pessoa) {
-        return res.status(404).json({ erro: 'Pessoa não encontrada' });
-      }
-  
-      const novaConta = await Conta.create({
-        idPessoa,
-        saldo,
-        limiteSaqueDiario,
-        flagAtivo,
-        tipoConta
-      });
-  
-      res.status(201).json(novaConta);
-    } catch (error) {
-      res.status(500).json({ erro: 'Erro ao criar conta', detalhes: error.message });
-    }
-  });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

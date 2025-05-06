@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useContaStore } from '../Store/contaStore';
+import { useUserStore } from '../Store/userStore';
 import {
   Container,
   Header,
@@ -35,11 +37,24 @@ import {
 import { FaRegEye,FaRegEyeSlash } from "react-icons/fa6";
 
 const Menu = () => {
+  const {saldo, tipoConta, resetConta} = useContaStore();
+  const {nome,resetData} = useUserStore();
+  const [conta,setConta] = useState('');
+
+  useEffect(() =>{
+    if( tipoConta === 1){
+      setConta('Conta Corrente');
+    }else{
+      setConta('Conta Poupança');
+    }
+  },[tipoConta])
   const navigate = useNavigate();
   const [closeUp, setCloseUp] = useState(false); // Estado para controlar a visibilidade do saldo
 
   const handlerOut =() =>{
     alert('Você saiu da conta!');
+    resetData();
+    resetConta();
     navigate('/auth'); // Redireciona para a página de autenticação
   }
 
@@ -53,8 +68,8 @@ const Menu = () => {
         <UserSection>
           <ProfilePic src="https://i.pravatar.cc/150?img=4" />
           <UserInfo>
-            <UserName>João da Silva</UserName>
-            <AccountInfo>Agência: 1234 · Conta: 56789-0</AccountInfo>
+            <UserName>{nome}</UserName>
+            <AccountInfo>Tipo Conta : {conta}</AccountInfo>
           </UserInfo>
         </UserSection>
 
@@ -64,7 +79,7 @@ const Menu = () => {
       <BalanceSection> {/* Saldo */}
         <div>
           <BalanceTitle>Saldo disponível</BalanceTitle>
-          <BalanceAmount>{closeUp ? 'R$ 12.480,90' : '************'}</BalanceAmount>
+          <BalanceAmount>{closeUp ? saldo : '************'}</BalanceAmount>
         </div>
         <CloseUP onClick={handlerCloseUP}>
           {closeUp ? <FaRegEye size={'30px'}/> : <FaRegEyeSlash size={'30px'}/>}
@@ -80,11 +95,12 @@ const Menu = () => {
         </ActionCard>
         <ActionCard>
           <CardIcon><FiDollarSign /></CardIcon>
-          <CardLabel>Pagamentos</CardLabel>
+          <CardLabel>
+            <Link to={{pathname:"/saque"}}>Saque</Link></CardLabel>
         </ActionCard>
         <ActionCard>
           <CardIcon><FiFileText /></CardIcon>
-          <CardLabel>Extrato</CardLabel>
+          <CardLabel> <Link to={{pathname:"/transacao"}}>Extrato</Link></CardLabel>
         </ActionCard>
         <ActionCard>
           <CardIcon><FiTrendingUp /></CardIcon>
@@ -96,7 +112,7 @@ const Menu = () => {
         </ActionCard>
         <ActionCard>
           <CardIcon><FiSettings /></CardIcon>
-          <CardLabel>Configurações</CardLabel>
+          <CardLabel> <Link to={{pathname:"/conta"}}>Detalhes da Conta</Link></CardLabel>
         </ActionCard>
       </CardsContainer>
 

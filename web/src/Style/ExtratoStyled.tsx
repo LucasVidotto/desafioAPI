@@ -20,7 +20,7 @@ export const ContainerExtrato = styled.div<{ type: string }>`
     height: 100%;
     background-color: #ffffff10;
     border-left: 5px solid ${props =>
-    props.type === 'deposit' ? '#00e676' : '#ff5252'};
+    props.type === 'deposito' ? '#00e676' : '#ff5252'};
     border-radius: 0.8rem;
     padding: 1rem 1rem;
 `

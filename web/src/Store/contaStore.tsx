@@ -7,6 +7,7 @@ type contaState = {
   limiteSaqueDiario: number;
   tipoConta: number;
   takeConta: (idConta: number,saldo: number, limiteSaqueDiario: number, tipoConta: number) => void;
+  resetConta: () => void;
 };
 
 export const useContaStore = create(

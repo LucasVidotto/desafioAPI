@@ -8,6 +8,7 @@ import {
   ValueHighlight,
   TitleSection,
 } from "../Style/ExtratoStyled";
+import Nav from "../Components/Nav";
 
 const ContaDetalhes = () => {
   const  {nome, cpf, dataNascimento, email} = useUserStore();
@@ -15,6 +16,7 @@ const ContaDetalhes = () => {
   console.log("Usuário logado:", nome, cpf, dataNascimento, email);
   return (
     <Container>
+      <Nav />
       <CardExtrato>
         <ContainerExtrato type="conta">
           <TitleSection>Detalhes da Conta</TitleSection>

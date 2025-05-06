@@ -13,6 +13,7 @@ import {
 } from '../Style/ContaStyled';
 import {Toggle} from '../Style/AuthStyled';
 
+
 const baseURlPessoa = 'http://localhost:3000/cadastros';
 
 interface AuthScreenProps {
