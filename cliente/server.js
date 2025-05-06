@@ -15,41 +15,73 @@ app.use(express.json());
 sequelize.sync();
 
 // ROTA PARA CADASTRAR UMA PESSOA
-app.post('/pessoas', async (req, res) => {
+app.post('/cadastros', async (req, res) => {
   try {
-    const { nome, cpf, dataNascimento, email, senha } = req.body;
+    const { nome, cpf, dataNascimento, email, senha, tipoConta} = req.body;
 
     const novaPessoa = await Pessoa.create({ nome, cpf, dataNascimento, email, senha });
 
-    res.status(201).json(novaPessoa);
+    const novaConta = await Conta.create({
+      idPessoa: novaPessoa.idPessoa, saldo: 0, 
+      limiteSaqueDiario: 1000, flagAtivo: true,
+      tipoConta: tipoConta, dataCriacao: new Date()
+    })
+    res.status(201).json({
+      pessoa: novaPessoa,
+      conta: novaConta
+  });
   } catch (error) {
     res.status(500).json({ erro: 'Erro ao cadastrar pessoa', detalhes: error.message });
   }
 });
 
 app.post('/transacoes', async(req,res) =>{
-  try{
-    const {idConta, valor, dataTransacao} = req.body;
+  const { idConta, valor, dataTransacao,tipoDeposito } = req.body;
 
-    const novaTransacao = await Transacao.create({idConta, valor, dataTransacao});
-    res.status(201).json(novaTransacao);
-  }catch(error){
-    res.status(500).json({error: 'Erro de cadastro de transaçao', detalhes: error.message});
+  if (!idConta || !valor || !dataTransacao) {
+    return res.status(400).json({ error: "Campos obrigatórios ausentes." });
   }
-})
+
+  try {
+    const novaTransacao = await Transacao.create({
+      idConta,
+      valor,
+      dataTransacao,
+      tipoDeposito
+    });
+    if(novaTransacao){
+      const conta = await Conta.findOne({where: {idConta}});
+      if(!conta){
+        return res.status(404).json({error: 'Conta nao encontrada'});
+      }
+      if(tipoDeposito === 'deposito'){
+        conta.saldo += parseFloat(valor);
+        await conta.save();
+      }
+    }
+
+    res.status(201).json(novaTransacao);
+  } catch (error) {
+    console.error('Erro ao criar transação:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 
 //buscando do banco de dados
 app.post('/login', async (req, res) => {
-  const { email, senha } = req.body;
+  const { cpf, senha } = req.body;
 
   try {
     // Busca o usuário pelo email e senha no banco
-    const pessoa = await Pessoa.findOne({ where: { email, senha } });
-
+    const pessoa = await Pessoa.findOne({ where: { cpf, senha } });
+    
     if (pessoa) {
-      res.status(200).json({ message: 'Login bem-sucedido', user: pessoa });
+      const conta = await Conta.findOne({where: {idPessoa: pessoa.idPessoa}})
+      console.log('pessoa : ',pessoa.idPessoa)
+      res.status(200).json({ message: 'Login bem-sucedido', pessoa, conta });
     } else {
-      res.status(401).json({ message: 'Email ou senha incorretos' });
+      res.status(401).json({ message: 'cpf ou senha incorretos' });
     }
   } catch (error) {
     console.error('Erro no login:', error);
@@ -57,9 +89,30 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.post('/extrato', async (req, res) => {
+  const { idConta } = req.query;
+
+  try {
+    let where = {};
+    if (idConta) {
+      where.idConta = idConta;
+    }
+
+    const transacoes = await Transacao.findAll({
+      where,
+      order: [['dataTransacao', 'DESC']]
+    });
+
+    res.json(transacoes);
+  } catch (error) {
+    console.error("Erro ao buscar transações:", error);
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
+});
+
 app.post('/contas', async (req, res) => {
     try {
-      const { idPessoa, saldo, limiteSaqueDiario, flagAtivo, tipoConta } = req.body;
+      const { cpf, saldo, limiteSaqueDiario, flagAtivo, tipoConta, dataCriacao } = req.body;
   
       // Verifica se a pessoa existe
       const pessoa = await Pessoa.findByPk(idPessoa);

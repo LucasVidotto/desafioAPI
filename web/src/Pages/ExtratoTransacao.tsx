@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import Axios from 'axios';
 import {
     Container,
     Card,
@@ -8,8 +10,10 @@ import {
     DateText,
     Amount
   } from '../Style/TransacaoStyled';
+  import { useContaStore } from '../Store/contaStore';
 import { Link } from 'react-router-dom';
-  
+const baseURlPost = 'http://localhost:3000/extrato';
+
   const mockTransactions = [
     {
       id: 1,
@@ -40,9 +44,16 @@ import { Link } from 'react-router-dom';
       amount: -150.00
     }
   ];
-  
-  const ExtratoTransacao = () => {
 
+  const ExtratoTransacao = () => {
+  const [extratos, setExtratos] = useState();
+  const {idConta,tipoConta } = useContaStore();
+
+  useEffect(() =>{
+    Axios.get(`$baseURlPost?idConta=idConta`).then((response=>{
+      setExtratos(response.data);
+    }))
+  })
     return (
       <Container>
         <Card>

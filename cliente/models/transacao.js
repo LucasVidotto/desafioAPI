@@ -24,6 +24,10 @@ const Transacao = sequelize.define('Transacao', {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW
+    },
+    tipoDeposito:{
+        type: DataTypes.STRING,
+        allowNull: false,
     }
     }, {
         tableName: 'tbl_transacao',
@@ -42,4 +46,4 @@ Conta.hasMany(Transacao, {
     as: 'transacoes'
 });
 
-module.eperts = Transacao;
+module.exports = Transacao;

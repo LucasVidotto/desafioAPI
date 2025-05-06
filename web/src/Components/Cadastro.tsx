@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import {
   FormCard,
   Title,
@@ -11,31 +13,55 @@ import {
 } from '../Style/ContaStyled';
 import {Toggle} from '../Style/AuthStyled';
 
+const baseURlPessoa = 'http://localhost:3000/cadastros';
+
 interface AuthScreenProps {
   onClick: () => void;
 }
 
 const Cadastro= ({onClick}:AuthScreenProps) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    name: '',
+    nome: '',
     cpf: '',
     email: '',
-    accountType: '',
+    tipoConta: '',
     password: '',
+    dataNascimento: '',
+    numConta: 0,
   });
-
   const [errors, setErrors] = useState<string | null>(null);
 
+  const handlerCadastro = async () => {
+    if (formData.tipoConta === 'corrente'){
+      setFormData(prev => ({ ...prev, numConta: 1 }));
+    }else{
+      setFormData(prev => ({ ...prev, numConta: 2 }));
+    }
+    Axios.post(baseURlPessoa, {
+      nome: formData.nome,
+      cpf: formData.cpf,
+      email: formData.email,
+      tipoConta: formData.numConta,
+      senha: formData.password,
+      dataNascimento: formData.dataNascimento,
+
+    })
+  }
+
+  //ecebe as informações digitadas pelo usuarios no formulário
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  //verifica se os campos estão preenchidos corretamente
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, cpf, email, accountType, password } = formData;
+    const { nome, cpf, email, tipoConta, password, dataNascimento } = formData;
 
-    if (!name || !cpf || !email || !accountType || !password) {
+    if (!nome || !cpf || !email || !tipoConta || !password || !dataNascimento) {
       setErrors('Preencha todos os campos!');
       return;
     }
@@ -43,6 +69,8 @@ const Cadastro= ({onClick}:AuthScreenProps) => {
     setErrors(null);
     console.log('Dados enviados:', formData);
     alert('Conta cadastrada com sucesso!');
+    handlerCadastro();
+    navigate('/dashboard')
   };
 
   return (
@@ -51,7 +79,7 @@ const Cadastro= ({onClick}:AuthScreenProps) => {
         <Title>Criar Conta Bancária</Title>
 
         <Label>Nome completo</Label>
-        <Input type="text" name="name" value={formData.name} onChange={handleChange} />
+        <Input type="text" name="nome" value={formData.nome} onChange={handleChange} />
 
         <Label>CPF</Label>
         <Input type="text" name="cpf" value={formData.cpf} onChange={handleChange} />
@@ -59,14 +87,18 @@ const Cadastro= ({onClick}:AuthScreenProps) => {
         <Label>Email</Label>
         <Input type="email" name="email" value={formData.email} onChange={handleChange} />
 
+        <Label>Senha</Label>
+        <Input type="password" name="password" value={formData.password} onChange={handleChange} />
+
+        <Label>Data Nascimento</Label>
+        <Input type="date" name="dataNascimento" value={formData.dataNascimento} onChange={handleChange} />
+
         <Label>Tipo de Conta</Label>
-        <Select name="accountType" value={formData.accountType} onChange={handleChange}>
+        <Select name="tipoConta" value={formData.tipoConta} onChange={handleChange}>
           <option value="">Selecione</option>
           <option value="corrente">Conta Corrente</option>
           <option value="poupanca">Conta Poupança</option>
         </Select>
-        <Label>Senha</Label>
-        <Input type="password" name="password" value={formData.password} onChange={handleChange} />
 
         {errors && <ErrorText>{errors}</ErrorText>}
 
