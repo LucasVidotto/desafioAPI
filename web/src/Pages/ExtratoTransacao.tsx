@@ -21,7 +21,6 @@ const baseURlPost = 'http://localhost:3000/extrato';
   const {idConta } = useContaStore();
 
   useEffect(() =>{//puxa os dados da transção por idConta
-    console.log('id : ',idConta);
     Axios.post(baseURlPost, {
       idConta: idConta
     }).then((response) =>{

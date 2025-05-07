@@ -11,9 +11,8 @@ import {
 import Nav from "../Components/Nav";
 
 const ContaDetalhes = () => {
-  const  {nome, cpf, dataNascimento, email} = useUserStore();
+  const  {nome, cpf, email} = useUserStore();
   const { saldo,tipoConta } = useContaStore();
-  console.log("Usuário logado:", nome, cpf, dataNascimento, email);
   return (
     <Container>
       <Nav />

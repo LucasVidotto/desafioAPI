@@ -19,7 +19,6 @@ const AppRoutes = () => {
         <Route path='/saque' element={<Saque />} />
         <Route path="/transacao" element={<ExtratoTransacao/>} />
         <Route path="/extrato" element={<Extrato />} />
-        {/* <Route path="/conta/:id" element={<ContaDetalhe />} /> */}
         <Route path="/conta" element={<ContaDetalhe />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

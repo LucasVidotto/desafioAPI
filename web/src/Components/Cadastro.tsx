@@ -13,7 +13,6 @@ import {
 } from '../Style/ContaStyled';
 import {Toggle} from '../Style/AuthStyled';
 
-
 const baseURlPessoa = 'http://localhost:3000/cadastros';
 
 interface AuthScreenProps {
@@ -71,7 +70,6 @@ const Cadastro= ({onClick}:AuthScreenProps) => {
     }
 
     setErrors(null);
-    console.log('Dados enviados:', formData);
     alert('Conta cadastrada com sucesso!');
     handlerCadastro();
     navigate('/dashboard')

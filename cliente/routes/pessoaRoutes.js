@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Pessoa = require('../models/pessoa');
 const Conta = require('../models/conta');
-const validarCpf = require('../validators/validarCpf');
+const validarCpf = require('../validator/validarCpf');
 
 router.post('/cadastros', async (req, res) => {
   try {

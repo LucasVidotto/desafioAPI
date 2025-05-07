@@ -39,8 +39,6 @@ router.post('/transacoes', async (req, res) => {
 
 router.post('/extrato', async (req, res) => {
   const { idConta } = req.body;
-
-  console.log(idConta);
   try {
     const where = idConta ? { idConta } : {};
 

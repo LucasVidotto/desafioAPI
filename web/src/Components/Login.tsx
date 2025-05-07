@@ -59,7 +59,6 @@ const AuthScreen = ({onClick}: AuthScreenProps) => {
       const response = await Axios.post(baseURlPost,{cpf, senha});
       
       if (response.data){
-        console.log('dados:', response.data);
         const {pessoa, conta} = response.data; // recebe dados do banco
         const { idPessoa, nome, cpf, dataNascimento, email  } = pessoa;//separa para pessoa
         const {idConta,saldo ,limiteSaqueDiario,tipoConta, flagAtivo} = conta; //separa para conta
@@ -71,7 +70,7 @@ const AuthScreen = ({onClick}: AuthScreenProps) => {
             navigate('/dashboard');
           }, 500); 
         }else{
-        alert('Sua conta está Desativada')
+          alert('Sua conta está Desativada')
         }
         /*  */
       }

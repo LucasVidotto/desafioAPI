@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 92vw;
+  width: 92.9vw;
   min-height: 100vh;
   padding: 3rem;
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);

@@ -27,10 +27,11 @@ const baseURlPost = 'http://localhost:3000/transacoes';
         const {idConta,tipoConta,saldo } = useContaStore();
         const [errors, setErrors] = useState<string | null>(null);
     
-        const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {//digita usuário
             const { name, value } = e.target;
             setDeposito(prev => ({ ...prev, [name]: value }));
         };
+
         const handleSubmit = async (e: React.FormEvent) => {
             e.preventDefault();
             const {valor,cpf, dataTransacao, tipoDeposito} = deposito;
@@ -52,9 +53,7 @@ const baseURlPost = 'http://localhost:3000/transacoes';
            }else{
             alert('Saldo Insuficiente\n Você possui R$ '+saldo);
            }
-    
         }
-
     return (
       <Container>
         <Nav />

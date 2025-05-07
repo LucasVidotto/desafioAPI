@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useContaStore } from '../Store/contaStore';
-import { useNavigate } from 'react-router-dom';
 import {
   Container,
   BalanceSection,
@@ -22,7 +21,6 @@ const Menu = () => {
   const {saldo, tipoConta, idConta} = useContaStore();
   const [statusBlock, setStatusBlock] = useState(false);
   const [conta,setConta] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() =>{//verificação do tipo de conta
     if( tipoConta === 1){
@@ -47,8 +45,6 @@ const Menu = () => {
 
   const handleropenBloqueio = () =>{//chama o bloqueio
     setStatusBlock(!statusBlock)
-    alert('Conta Bloqueada');
-    navigate('/auth');
   }
 
   return (

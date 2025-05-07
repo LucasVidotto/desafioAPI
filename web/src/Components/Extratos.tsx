@@ -9,7 +9,7 @@ const Extrato = () =>{
     const data = location.state;
 
     useEffect(() => {//verifica se não foi aberto com link
-         if(!data){
+        if(!data){
             navigate('/transacao');
         }
     }, [navigate, data]);
